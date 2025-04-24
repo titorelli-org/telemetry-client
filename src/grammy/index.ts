@@ -1,8 +1,10 @@
-import { Composer } from "grammy";
+import { Composer, type Context } from "grammy";
 import type { TelemetryClient } from "../core/TelemetryClient";
 
-export const grammyMiddleware = (client: TelemetryClient) => {
-  return new Composer((ctx, next) => {
+export const grammyMiddleware = (
+  client: TelemetryClient,
+): Composer<Context> => {
+  return new Composer<Context>((ctx, next) => {
     client.update(ctx.update).finally(next);
   });
 };
