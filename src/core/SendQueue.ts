@@ -58,20 +58,29 @@ export class SendQueue<T> {
     this.processing = true;
 
     try {
-      const records = await this.wal.readAll();
+      const rest = await this.wal.readAll();
 
-      for (let i = 0; i < records.length; i++) {
-        const record = records[i];
-        const success = await this.sender(record);
+      for (let i = 0; i < rest.length; i++) {
+        const record = rest[i];
 
-        if (success != false) {
-          records.splice(i--, 1);
+        try {
+          const success = await this.sender(record);
+
+          if (success != false) {
+            rest.splice(i--, 1);
+          }
+        } catch (e) {
+          console.error(e);
         }
       }
 
-      await this.wal.clear();
+      try {
+        await this.wal.clear();
 
-      await this.wal.append(records);
+        await this.wal.append(rest);
+      } catch (e) {
+        console.error(e);
+      }
     } catch (e) {
       console.error(e);
     } finally {
