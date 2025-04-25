@@ -14,7 +14,7 @@ export class TelemetryClient {
   }
 
   public async update(update: any) {
-    const { data } = await this.axios.post<void>("/update", update);
+    const { data } = await this.axios.post<void>("/update", { update });
 
     return data;
   }
