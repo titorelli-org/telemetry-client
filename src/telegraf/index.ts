@@ -9,7 +9,7 @@ export const telegrafMiddleware = (
 
     void client.update({
       update: ctx.update,
-      author: await ctx.getChatMember(ctx.from.id),
+      author: ctx.from ? await ctx.getChatMember(ctx.from.id) : null,
       chat: await ctx.getChat(),
       me: await ctx.telegram.getMe(),
     });
