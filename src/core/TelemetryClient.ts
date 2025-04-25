@@ -13,8 +13,23 @@ export class TelemetryClient {
     this.axios = axios.create({ baseURL: this.serviceUrl });
   }
 
-  public async update(update: any) {
-    const { data } = await this.axios.post<void>("/update", { update });
+  public async update({
+    update,
+    author,
+    chat,
+    me,
+  }: {
+    update: any;
+    author: any;
+    chat: any;
+    me: any;
+  }) {
+    const { data } = await this.axios.post<void>("/update", {
+      update,
+      author,
+      chat,
+      me,
+    });
 
     return data;
   }
